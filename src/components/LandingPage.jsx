@@ -182,8 +182,8 @@ export default function DatabaseEngineerLandingPage() {
     },
     {
       label: 'Topmate',
-      value: 'topmate.io',
-      href: 'https://topmate.io/',
+      value: 'topmate.io/kiran_shinde48',
+      href: 'https://topmate.io/kiran_shinde48/',
       icon: Sparkles,
     },
   ]
@@ -268,7 +268,7 @@ export default function DatabaseEngineerLandingPage() {
               <FaInstagram size={18} />
             </a>
             <a
-              href="https://topmate.io/"
+              href="https://topmate.io/kiran_shinde48/"
               target="_blank"
               rel="noreferrer"
               className="transition hover:scale-110 hover:text-cyan-300"
