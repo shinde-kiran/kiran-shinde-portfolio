@@ -1,8 +1,7 @@
-import LandingPage from './components/LandingPage.jsx'
-import './App.css'
+import DatabaseEngineerLandingPage from "./components/LandingPage";
 
 function App() {
-  return <LandingPage />
+  return <DatabaseEngineerLandingPage />;
 }
 
-export default App
+export default App;

@@ -1,65 +1,13 @@
-@import 'tailwindcss';
-
-:root {
-  --bg: #f5ede3;
-  --surface: rgba(255, 250, 244, 0.74);
-  --text: #34271f;
-  --text-strong: #241913;
-  --muted: #6f5c4e;
-  --line: rgba(76, 56, 42, 0.14);
-  --accent: #d66a49;
-  --accent-strong: #a84829;
-  --accent-2: #187064;
-  --shadow: 0 24px 60px rgba(72, 49, 33, 0.12);
-  --font-body: 'Space Grotesk', 'Avenir Next', 'Trebuchet MS', sans-serif;
-  --font-display: 'Fraunces', Georgia, serif;
-
-  color: var(--text);
-  background:
-    radial-gradient(circle at top left, rgba(24, 112, 100, 0.16), transparent 30%),
-    radial-gradient(circle at 85% 8%, rgba(214, 106, 73, 0.2), transparent 26%),
-    linear-gradient(180deg, #fdf8f2 0%, #f5ede3 45%, #efe1d0 100%);
-  font-family: var(--font-body);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 1.6;
-  font-weight: 400;
-}
-
-* {
-  box-sizing: border-box;
-}
+@import "tailwindcss";
 
 html {
-  scroll-behavior: smooth;
+  @apply bg-neutral-950;
 }
 
 body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-body,
-a,
-button,
-input,
-textarea,
-select {
-  font-family: var(--font-body);
-}
-
-a {
-  color: inherit;
-}
-
-img {
-  max-width: 100%;
-  display: block;
+  @apply m-0 bg-neutral-950 text-white;
 }
 
 #root {
-  min-height: 100vh;
+  @apply min-h-screen bg-neutral-950;
 }

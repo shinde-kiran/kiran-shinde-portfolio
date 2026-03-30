@@ -4,6 +4,7 @@ import { FaInstagram, FaLinkedinIn } from 'react-icons/fa6'
 import heroImage from '../assets/hero.png'
 
 const HERO_TITLE = 'Senior Database Engineer'
+const MOTION_DURATION_SCALE = 1.2
 
 export default function DatabaseEngineerLandingPage() {
   const features = [
@@ -193,7 +194,11 @@ export default function DatabaseEngineerLandingPage() {
     visible: (delay = 0) => ({
       opacity: 1,
       y: 0,
-      transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] },
+      transition: {
+        duration: 0.7 * MOTION_DURATION_SCALE,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      },
     }),
   }
 
@@ -201,7 +206,7 @@ export default function DatabaseEngineerLandingPage() {
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: 0.12,
+        staggerChildren: 0.12 * MOTION_DURATION_SCALE,
       },
     },
   }
@@ -211,7 +216,11 @@ export default function DatabaseEngineerLandingPage() {
       <Motion.div
         className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(168,85,247,0.18),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.14),transparent_30%)]"
         animate={{ opacity: [0.7, 1, 0.8] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{
+          duration: 6 * MOTION_DURATION_SCALE,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
       />
 
       <header className="sticky top-0 z-20 border-b border-white/10 bg-neutral-950/80 backdrop-blur-xl">
@@ -220,7 +229,7 @@ export default function DatabaseEngineerLandingPage() {
             className="hidden gap-6 text-white/70 md:flex"
             initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
           >
             <a href="#hero" className="transition hover:text-white">
               Home
@@ -249,7 +258,7 @@ export default function DatabaseEngineerLandingPage() {
             className="flex gap-4"
             initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.2 }}
           >
             <a
               href="https://linkedin.com"
@@ -321,7 +330,7 @@ export default function DatabaseEngineerLandingPage() {
                 <Motion.h1
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, ease: 'easeOut' }}
+                  transition={{ duration: 0.35 * MOTION_DURATION_SCALE, ease: 'easeOut' }}
                   className="whitespace-nowrap text-[1.9rem] font-bold leading-none tracking-[-0.05em] text-cyan-300 sm:text-[2.4rem] lg:text-[3rem]"
                 >
                   {HERO_TITLE}
@@ -360,13 +369,17 @@ export default function DatabaseEngineerLandingPage() {
           <Motion.div
             initial={{ opacity: 0, scale: 0.9, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.9 * MOTION_DURATION_SCALE, ease: [0.22, 1, 0.36, 1] }}
             className="flex justify-center"
           >
             <Motion.div
               className="relative"
               animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              transition={{
+                duration: 4 * MOTION_DURATION_SCALE,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
             >
               <div className="absolute inset-0 rounded-full bg-purple-500/20 blur-3xl" />
               <img
@@ -385,7 +398,7 @@ export default function DatabaseEngineerLandingPage() {
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
             className="text-3xl font-bold md:text-5xl"
           >
             Features ✨
@@ -395,7 +408,7 @@ export default function DatabaseEngineerLandingPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
             className="mt-4 max-w-3xl text-lg text-white/65"
           >
             Core areas where I help engineering teams keep critical database
@@ -440,7 +453,7 @@ export default function DatabaseEngineerLandingPage() {
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
             className="text-3xl font-bold md:text-5xl"
           >
             Tech Stack 🛠️
@@ -450,7 +463,7 @@ export default function DatabaseEngineerLandingPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
             className="mt-4 max-w-3xl text-lg text-white/65"
           >
             The platforms, tools, and core strengths I use to build reliable,
@@ -508,7 +521,7 @@ export default function DatabaseEngineerLandingPage() {
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
             className="text-3xl font-bold md:text-5xl"
           >
             Experience 💼
@@ -518,7 +531,7 @@ export default function DatabaseEngineerLandingPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
             className="mt-4 max-w-3xl text-lg text-white/65"
           >
             Hands-on database engineering experience across SaaS, fintech, and
@@ -606,7 +619,7 @@ export default function DatabaseEngineerLandingPage() {
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
             className="text-3xl font-bold md:text-5xl"
           >
             Teaching &amp; Impact 📚
@@ -616,7 +629,7 @@ export default function DatabaseEngineerLandingPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
             whileHover={{ y: -4 }}
             className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition hover:border-cyan-400/30 hover:bg-white/8"
           >
@@ -660,7 +673,7 @@ export default function DatabaseEngineerLandingPage() {
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
             className="text-3xl font-bold md:text-5xl"
           >
             Blogs ✍️
@@ -670,7 +683,7 @@ export default function DatabaseEngineerLandingPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
             className="mt-4 max-w-3xl text-lg text-white/65"
           >
             Writing focused on practical lessons from database operations,
@@ -719,7 +732,7 @@ export default function DatabaseEngineerLandingPage() {
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
             className="text-3xl font-bold md:text-5xl"
           >
             Contact 📬
@@ -729,7 +742,7 @@ export default function DatabaseEngineerLandingPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
             className="mt-4 max-w-3xl text-lg text-white/65"
           >
             Open to conversations around database engineering, production
