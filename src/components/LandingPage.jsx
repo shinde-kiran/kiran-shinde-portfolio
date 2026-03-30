@@ -300,7 +300,10 @@ export default function DatabaseEngineerLandingPage() {
         </div>
       </header>
 
-      <section id="hero" className="relative overflow-hidden px-6 py-16 md:py-24">
+      <section
+        id="hero"
+        className="relative scroll-mt-24 overflow-hidden px-6 py-16 md:scroll-mt-28 md:py-24"
+      >
         <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
           <Motion.div
             initial="hidden"
@@ -392,7 +395,10 @@ export default function DatabaseEngineerLandingPage() {
         </div>
       </section>
 
-      <section id="features" className="px-6 pb-10 md:pb-14">
+      <section
+        id="features"
+        className="scroll-mt-24 px-6 pb-10 md:scroll-mt-28 md:pb-14"
+      >
         <div className="mx-auto max-w-6xl">
           <Motion.h2
             initial={{ opacity: 0, y: 24 }}
@@ -447,7 +453,10 @@ export default function DatabaseEngineerLandingPage() {
         </div>
       </section>
 
-      <section id="tech" className="px-6 pt-6 pb-10 md:pb-14">
+      <section
+        id="tech"
+        className="scroll-mt-24 px-6 pt-6 pb-10 md:scroll-mt-28 md:pb-14"
+      >
         <div className="mx-auto max-w-6xl">
           <Motion.h2
             initial={{ opacity: 0, y: 24 }}
@@ -515,7 +524,10 @@ export default function DatabaseEngineerLandingPage() {
         </div>
       </section>
 
-      <section id="experience" className="px-6 pt-6 pb-10 md:pb-14">
+      <section
+        id="experience"
+        className="scroll-mt-24 px-6 pt-6 pb-10 md:scroll-mt-28 md:pb-14"
+      >
         <div className="mx-auto max-w-6xl">
           <Motion.h2
             initial={{ opacity: 0, y: 24 }}
@@ -613,7 +625,10 @@ export default function DatabaseEngineerLandingPage() {
         </div>
       </section>
 
-      <section id="teaching" className="px-6 pt-6 pb-10 md:pb-14">
+      <section
+        id="teaching"
+        className="scroll-mt-24 px-6 pt-6 pb-10 md:scroll-mt-28 md:pb-14"
+      >
         <div className="mx-auto max-w-6xl">
           <Motion.h2
             initial={{ opacity: 0, y: 24 }}
@@ -667,7 +682,10 @@ export default function DatabaseEngineerLandingPage() {
         </div>
       </section>
 
-      <section id="blogs" className="px-6 py-10 md:py-14">
+      <section
+        id="blogs"
+        className="scroll-mt-24 px-6 py-10 md:scroll-mt-28 md:py-14"
+      >
         <div className="mx-auto max-w-6xl">
           <Motion.h2
             initial={{ opacity: 0, y: 24 }}
@@ -726,7 +744,10 @@ export default function DatabaseEngineerLandingPage() {
         </div>
       </section>
 
-      <section id="contact" className="px-6 pt-6 pb-10 md:pb-14">
+      <section
+        id="contact"
+        className="scroll-mt-24 px-6 pt-6 pb-10 md:scroll-mt-28 md:pb-14"
+      >
         <div className="mx-auto max-w-6xl">
           <Motion.h2
             initial={{ opacity: 0, y: 24 }}
