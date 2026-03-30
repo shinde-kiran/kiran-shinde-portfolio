@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { BookOpen, Mail, Sparkles } from 'lucide-react'
 import { motion as Motion } from 'framer-motion'
 import { FaInstagram, FaLinkedinIn } from 'react-icons/fa6'
@@ -5,8 +6,13 @@ import heroImage from '../assets/hero.png'
 
 const HERO_TITLE = 'Senior Database Engineer'
 const MOTION_DURATION_SCALE = 1.2
+const MOBILE_NAV_OFFSET = 96
+const DESKTOP_NAV_OFFSET = 112
+const ANCHOR_SCROLL_DURATION = 850
 
 export default function DatabaseEngineerLandingPage() {
+  const scrollAnimationFrame = useRef(null)
+
   const features = [
     {
       title: 'Scalable Data Platforms',
@@ -211,6 +217,106 @@ export default function DatabaseEngineerLandingPage() {
     },
   }
 
+  const getAnchorOffset = () =>
+    window.matchMedia('(min-width: 768px)').matches
+      ? DESKTOP_NAV_OFFSET
+      : MOBILE_NAV_OFFSET
+
+  const stopScrollAnimation = () => {
+    if (scrollAnimationFrame.current !== null) {
+      window.cancelAnimationFrame(scrollAnimationFrame.current)
+      scrollAnimationFrame.current = null
+    }
+  }
+
+  const animateScrollTo = (top) => {
+    stopScrollAnimation()
+
+    const start = window.scrollY
+    const distance = top - start
+    const startTime = performance.now()
+
+    const easeInOutCubic = (progress) =>
+      progress < 0.5
+        ? 4 * progress * progress * progress
+        : 1 - ((-2 * progress + 2) ** 3) / 2
+
+    const tick = (currentTime) => {
+      const elapsed = currentTime - startTime
+      const progress = Math.min(elapsed / ANCHOR_SCROLL_DURATION, 1)
+      const easedProgress = easeInOutCubic(progress)
+
+      window.scrollTo({
+        top: start + distance * easedProgress,
+        behavior: 'auto',
+      })
+
+      if (progress < 1) {
+        scrollAnimationFrame.current = window.requestAnimationFrame(tick)
+        return
+      }
+
+      scrollAnimationFrame.current = null
+    }
+
+    scrollAnimationFrame.current = window.requestAnimationFrame(tick)
+  }
+
+  const scrollToSection = (hash, behavior = 'smooth') => {
+    const target = document.querySelector(hash)
+
+    if (!target) {
+      return
+    }
+
+    const top = target.getBoundingClientRect().top + window.scrollY - getAnchorOffset()
+
+    if (
+      behavior === 'smooth' &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      animateScrollTo(Math.max(top, 0))
+      return
+    }
+
+    stopScrollAnimation()
+    window.scrollTo({ top: Math.max(top, 0), behavior: 'auto' })
+  }
+
+  const handleAnchorNavigation = (event) => {
+    const hash = event.currentTarget.getAttribute('href')
+
+    if (!hash?.startsWith('#')) {
+      return
+    }
+
+    event.preventDefault()
+    window.history.pushState(null, '', hash)
+    scrollToSection(hash)
+  }
+
+  useEffect(() => {
+    const alignHashTarget = () => {
+      if (!window.location.hash) {
+        return
+      }
+
+      window.requestAnimationFrame(() => {
+        scrollToSection(window.location.hash, 'auto')
+      })
+    }
+
+    alignHashTarget()
+    window.addEventListener('hashchange', alignHashTarget)
+    window.addEventListener('popstate', alignHashTarget)
+
+    return () => {
+      stopScrollAnimation()
+      window.removeEventListener('hashchange', alignHashTarget)
+      window.removeEventListener('popstate', alignHashTarget)
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
       <Motion.div
@@ -231,25 +337,53 @@ export default function DatabaseEngineerLandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
           >
-            <a href="#hero" className="transition hover:text-white">
+            <a
+              href="#hero"
+              onClick={handleAnchorNavigation}
+              className="transition hover:text-white"
+            >
               Home
             </a>
-            <a href="#features" className="transition hover:text-white">
+            <a
+              href="#features"
+              onClick={handleAnchorNavigation}
+              className="transition hover:text-white"
+            >
               Features
             </a>
-            <a href="#tech" className="transition hover:text-white">
+            <a
+              href="#tech"
+              onClick={handleAnchorNavigation}
+              className="transition hover:text-white"
+            >
               Tech
             </a>
-            <a href="#experience" className="transition hover:text-white">
+            <a
+              href="#experience"
+              onClick={handleAnchorNavigation}
+              className="transition hover:text-white"
+            >
               Experience
             </a>
-            <a href="#teaching" className="transition hover:text-white">
+            <a
+              href="#teaching"
+              onClick={handleAnchorNavigation}
+              className="transition hover:text-white"
+            >
               Teaching
             </a>
-            <a href="#blogs" className="transition hover:text-white">
+            <a
+              href="#blogs"
+              onClick={handleAnchorNavigation}
+              className="transition hover:text-white"
+            >
               Blogs
             </a>
-            <a href="#contact" className="transition hover:text-white">
+            <a
+              href="#contact"
+              onClick={handleAnchorNavigation}
+              className="transition hover:text-white"
+            >
               Contact
             </a>
           </Motion.nav>
@@ -292,6 +426,7 @@ export default function DatabaseEngineerLandingPage() {
             </a>
             <a
               href="#blogs"
+              onClick={handleAnchorNavigation}
               className="transition hover:scale-110 hover:text-amber-300"
             >
               <BookOpen size={18} />
@@ -356,12 +491,14 @@ export default function DatabaseEngineerLandingPage() {
             >
               <a
                 href="#experience"
+                onClick={handleAnchorNavigation}
                 className="rounded-2xl border border-white/10 bg-white/5 px-6 py-3 font-semibold text-white transition hover:-translate-y-1 hover:bg-white/10"
               >
                 Experience 💼
               </a>
               <a
                 href="#blogs"
+                onClick={handleAnchorNavigation}
                 className="rounded-2xl border border-white/10 bg-white/5 px-6 py-3 font-semibold text-white transition hover:-translate-y-1 hover:bg-white/10"
               >
                 Read Blogs ✍️
