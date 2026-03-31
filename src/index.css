@@ -1,13 +1,53 @@
 @import "tailwindcss";
 
+:root {
+  color-scheme: dark;
+  --font-heading: "Space Grotesk", "Segoe UI", sans-serif;
+  --font-body: "Instrument Sans", "Segoe UI", sans-serif;
+}
+
 html {
   @apply bg-neutral-950;
 }
 
 body {
-  @apply m-0 bg-neutral-950 text-white;
+  @apply m-0 bg-neutral-950 text-white antialiased;
+  font-family: var(--font-body);
+  text-rendering: optimizeLegibility;
 }
 
 #root {
   @apply min-h-screen bg-neutral-950;
+}
+
+@supports (content-visibility: auto) {
+  .lazy-section {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 960px;
+  }
+
+  .lazy-panel {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 680px;
+  }
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-heading);
+}
+
+:where(button, input, textarea, select) {
+  font: inherit;
+}
+
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+::selection {
+  @apply bg-cyan-300/30 text-white;
+}
+
+a {
+  @apply text-inherit;
 }

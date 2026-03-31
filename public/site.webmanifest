@@ -1,0 +1,16 @@
+{
+  "name": "Kiran Shinde | Senior Database Engineer",
+  "short_name": "Kiran Shinde",
+  "description": "Server-rendered portfolio and writing for Kiran Shinde, a senior database engineer focused on MongoDB, PostgreSQL, and production reliability.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    }
+  ]
+}

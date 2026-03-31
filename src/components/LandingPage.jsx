@@ -1,199 +1,78 @@
-import { useEffect, useRef } from 'react'
-import { BookOpen, Mail, Sparkles } from 'lucide-react'
-import { motion as Motion } from 'framer-motion'
-import { FaInstagram, FaLinkedinIn } from 'react-icons/fa6'
-import heroImage from '../assets/hero.png'
+import { useEffect, useEffectEvent, useRef } from 'react'
+import {
+  BookOpen,
+  Brain,
+  Briefcase,
+  Cloud,
+  Code2,
+  Database,
+  Gauge,
+  GraduationCap,
+  Hand,
+  Settings2,
+  Shield,
+  Workflow,
+  ChartColumn,
+} from 'lucide-react'
 
-const HERO_TITLE = 'Senior Database Engineer'
+import ProgressivePortrait from './site/ProgressivePortrait'
+import SiteFooter from './SiteFooter'
+import SiteHeader from './SiteHeader'
+import useScrollHashSync from '../hooks/useScrollHashSync'
+import { LazyMotion, Motion, loadMotionFeatures } from '../lib/motion'
+import {
+  collaborationServices,
+  experienceTimeline,
+  faqItems,
+  featuredArticles,
+  keyImpact,
+  navigationLinks,
+  siteConfig,
+  specialties,
+  teachingContent,
+  techStackGroups,
+  utilityLinks,
+} from '../content/siteContent'
+
 const MOTION_DURATION_SCALE = 1.2
-const MOBILE_NAV_OFFSET = 96
-const DESKTOP_NAV_OFFSET = 112
 const ANCHOR_SCROLL_DURATION = 850
+const SECTION_SPACING =
+  'lazy-section scroll-mt-24 px-5 py-12 md:scroll-mt-28 md:px-6 md:py-16'
+const SECTION_FRAME = 'mx-auto max-w-6xl'
+const DIVIDER_LIST = 'divide-y divide-white/[0.08]'
+const SECTION_EYEBROW =
+  'text-xs font-medium uppercase tracking-[0.18em] text-cyan-300/75'
+
+const homeNavLinks = navigationLinks.map((item) => ({
+  ...item,
+  href: item.href.replace('/#', '#'),
+}))
+
+const homeUtilityLinks = utilityLinks.map((item) => ({
+  ...item,
+  href: item.href === '/#writing' ? '#writing' : item.href,
+}))
+
+const sectionIconMap = {
+  database: Database,
+  gauge: Gauge,
+  shield: Shield,
+  workflow: Workflow,
+  settings: Settings2,
+  chart: ChartColumn,
+  cloud: Cloud,
+  code: Code2,
+  graduation: GraduationCap,
+  brain: Brain,
+  book: BookOpen,
+}
+
+function formatIndex(index) {
+  return String(index + 1).padStart(2, '0')
+}
 
 export default function DatabaseEngineerLandingPage() {
   const scrollAnimationFrame = useRef(null)
-
-  const features = [
-    {
-      title: 'Scalable Data Platforms',
-      description:
-        'Designing resilient OLTP and analytics systems with clean schema strategy, partitioning, indexing, and replication.',
-      icon: '🗄️',
-    },
-    {
-      title: 'Performance Tuning',
-      description:
-        'Improving query performance using indexing, execution plans, and workload optimization.',
-      icon: '⚡',
-    },
-    {
-      title: 'Reliability & Recovery',
-      description:
-        'Backup, failover, monitoring, and disaster recovery strategies.',
-      icon: '🛡️',
-    },
-    {
-      title: 'Data Modeling',
-      description:
-        'Designing efficient schemas for scalable and maintainable systems.',
-      icon: '🧩',
-    },
-  ]
-
-  const blogs = [
-    {
-      title: 'Optimizing PostgreSQL Queries',
-      desc: 'Reduced query time from 5s to 200ms using indexing and execution plans.',
-      link: '#',
-    },
-    {
-      title: 'Database Indexing Guide',
-      desc: 'Understanding B-Tree vs Hash indexing strategies.',
-      link: '#',
-    },
-    {
-      title: 'Schema Design Best Practices',
-      desc: 'How to design scalable schemas for production systems.',
-      link: '#',
-    },
-  ]
-
-  const techStackGroups = [
-    {
-      emoji: '🗃️',
-      label: 'Databases',
-      items: ['MongoDB', 'PostgreSQL', 'Elasticsearch', 'Redis', 'Cassandra'],
-    },
-    {
-      emoji: '⚙️',
-      label: 'Core Expertise',
-      items: [
-        'Replication',
-        'Sharding',
-        'Query Optimization',
-        'Indexing',
-        'Partitioning',
-        'High Availability',
-        'Disaster Recovery',
-        'Performance Tuning',
-      ],
-    },
-    {
-      emoji: '📊',
-      label: 'Monitoring & Tools',
-      items: [
-        'MongoDB Compass',
-        'Atlas',
-        'Ops Manager',
-        'Kibana',
-        'DataGrip',
-        'Slow Query Logs',
-      ],
-    },
-    {
-      emoji: '☁️',
-      label: 'Cloud & DevOps',
-      items: ['AWS EC2', 'DigitalOcean', 'Docker'],
-    },
-    {
-      emoji: '💻',
-      label: 'Operating Systems & Scripting',
-      items: ['Linux', 'Ubuntu', 'Windows', 'Python', 'Bash'],
-    },
-  ]
-
-  const experienceTimeline = [
-    {
-      company: 'Zzazz.ai',
-      role: 'Database Administrator',
-      location: 'Bengaluru',
-      duration: 'Jan 2026 - Present',
-      highlights: [
-        'Own end-to-end performance, scalability, and reliability of MongoDB, PostgreSQL, Elasticsearch, and Redis clusters for high-traffic SaaS applications.',
-        'Manage MongoDB replica sets, sharded clusters, and PostgreSQL replication setups across distributed architectures.',
-        'Improved critical query performance by 35-40% through EXPLAIN/ANALYZE, index redesign, and query restructuring.',
-        'Implemented table partitioning, PostgreSQL autovacuum tuning, WAL optimization, and proactive monitoring across slow queries, replication lag, CPU, memory, and I/O.',
-        'Tuned Elasticsearch shard allocation, heap management, and index mappings, improving search latency by 50%.',
-        'Designed Redis caching strategies, backup and recovery workflows, RCA practices, and zero-downtime database changes with backend and DevOps teams.',
-      ],
-    },
-    {
-      company: 'Sprinklr Inc.',
-      role: 'Configuration Specialist',
-      location: 'Bengaluru',
-      duration: 'Apr 2025 - Jan 2026',
-      highlights: [
-        'Designed and optimized database configurations for scalable enterprise SaaS deployments.',
-        'Improved data ingestion workflows and enhanced system integration performance.',
-        'Collaborated with engineering teams on schema optimization and deployment automation.',
-        'Supported client onboarding with database validation, troubleshooting, and performance tuning.',
-        'Contributed to automation of configuration management and environment provisioning.',
-      ],
-    },
-    {
-      company: 'Russell Investments',
-      role: 'MongoDB Engineer',
-      location: 'Mumbai',
-      duration: 'Dec 2024 - Apr 2025',
-      highlights: [
-        'Architected and deployed high-availability MongoDB clusters using replica sets and sharding.',
-        'Installed, configured, and performance-tuned MongoDB across cloud and on-prem infrastructure.',
-        'Automated backup and disaster recovery processes using Atlas and Ops Manager.',
-        'Led version upgrades and cluster migrations with near-zero downtime.',
-        'Implemented RBAC, TLS, and encryption aligned with financial compliance standards.',
-        'Monitored replication lag, oplog growth, and overall cluster health metrics.',
-      ],
-    },
-    {
-      company: 'HDFC Bank Ltd',
-      role: 'Database Engineer',
-      location: 'Mumbai',
-      duration: 'May 2021 - Dec 2024',
-      highlights: [
-        'Managed MongoDB, Cassandra, and SQL databases supporting mission-critical banking applications.',
-        'Tuned high-frequency transactional queries and reduced execution time by 30%.',
-        'Developed and optimized stored procedures, indexes, and joins for reporting systems.',
-        'Led UAT and production deployments while maintaining high availability during peak transaction loads.',
-        'Coordinated L1 support, resolved critical production incidents, and strengthened reliability during cloud migration initiatives.',
-        'Implemented access controls and maintained strong data integrity compliance.',
-      ],
-    },
-  ]
-
-  const keyImpact = [
-    'Managed production systems with 100M+ records in distributed environments.',
-    'Improved database and search latency by up to 40-50%.',
-    'Reduced production incidents through proactive monitoring and performance engineering.',
-    'Strengthened high availability, failover, and disaster recovery strategies in high-SLA environments.',
-    'Enhanced database observability and reduced downtime risks.',
-  ]
-
-  const teachingImpactHighlights = [
-    { icon: '🎓', text: 'Mentored 1000+ students over the years.' },
-    { icon: '🧠', text: 'Built strong fundamentals and problem-solving skills.' },
-    { icon: '📘', text: 'Simplified complex topics into easy-to-understand concepts.' },
-  ]
-
-  const contactMethods = [
-    {
-      label: 'Email',
-      value: 'kiranshinde4443@gmail.com',
-      href: 'mailto:kiranshinde4443@gmail.com',
-      icon: Mail,
-    },
-    {
-      label: 'LinkedIn',
-      value: 'linkedin.com/in/kiran-shinde-198721184',
-      href: 'https://www.linkedin.com/in/kiran-shinde-198721184/',
-      icon: FaLinkedinIn,
-    },
-    {
-      label: 'Topmate',
-      value: 'topmate.io/kiran_shinde48',
-      href: 'https://topmate.io/kiran_shinde48/',
-      icon: Sparkles,
-    },
-  ]
 
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
@@ -217,10 +96,18 @@ export default function DatabaseEngineerLandingPage() {
     },
   }
 
-  const getAnchorOffset = () =>
-    window.matchMedia('(min-width: 768px)').matches
-      ? DESKTOP_NAV_OFFSET
-      : MOBILE_NAV_OFFSET
+  const getAnchorOffset = () => {
+    const header = document.querySelector('[data-site-header]')
+    const headerHeight = header?.getBoundingClientRect().height ?? 96
+
+    return headerHeight + 24
+  }
+
+  useScrollHashSync({
+    selector: 'main > section[id], footer[id]',
+    getOffset: getAnchorOffset,
+    clearHashWhen: '#hero',
+  })
 
   const stopScrollAnimation = () => {
     if (scrollAnimationFrame.current !== null) {
@@ -295,17 +182,17 @@ export default function DatabaseEngineerLandingPage() {
     scrollToSection(hash)
   }
 
-  useEffect(() => {
-    const alignHashTarget = () => {
-      if (!window.location.hash) {
-        return
-      }
-
-      window.requestAnimationFrame(() => {
-        scrollToSection(window.location.hash, 'auto')
-      })
+  const alignHashTarget = useEffectEvent(() => {
+    if (!window.location.hash) {
+      return
     }
 
+    window.requestAnimationFrame(() => {
+      scrollToSection(window.location.hash, 'auto')
+    })
+  })
+
+  useEffect(() => {
     alignHashTarget()
     window.addEventListener('hashchange', alignHashTarget)
     window.addEventListener('popstate', alignHashTarget)
@@ -318,634 +205,769 @@ export default function DatabaseEngineerLandingPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
-      <Motion.div
-        className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(168,85,247,0.18),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.14),transparent_30%)]"
-        animate={{ opacity: [0.7, 1, 0.8] }}
-        transition={{
-          duration: 6 * MOTION_DURATION_SCALE,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
+    <LazyMotion features={loadMotionFeatures}>
+      <div className="min-h-screen bg-neutral-950 text-white">
+        <a
+          href="#content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-6 focus:top-4 focus:z-50 focus:rounded-full focus:bg-cyan-300 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-neutral-950"
+        >
+          Skip to content
+        </a>
 
-      <header className="sticky top-0 z-20 border-b border-white/10 bg-neutral-950/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Motion.nav
-            className="hidden gap-6 text-white/70 md:flex"
-            initial={{ opacity: 0, y: -16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
-          >
-            <a
-              href="#hero"
-              onClick={handleAnchorNavigation}
-              className="transition hover:text-white"
-            >
-              Home
-            </a>
-            <a
-              href="#features"
-              onClick={handleAnchorNavigation}
-              className="transition hover:text-white"
-            >
-              Features
-            </a>
-            <a
-              href="#tech"
-              onClick={handleAnchorNavigation}
-              className="transition hover:text-white"
-            >
-              Tech
-            </a>
-            <a
-              href="#experience"
-              onClick={handleAnchorNavigation}
-              className="transition hover:text-white"
-            >
-              Experience
-            </a>
-            <a
-              href="#teaching"
-              onClick={handleAnchorNavigation}
-              className="transition hover:text-white"
-            >
-              Teaching
-            </a>
-            <a
-              href="#blogs"
-              onClick={handleAnchorNavigation}
-              className="transition hover:text-white"
-            >
-              Blogs
-            </a>
-            <a
-              href="#contact"
-              onClick={handleAnchorNavigation}
-              className="transition hover:text-white"
-            >
-              Contact
-            </a>
-          </Motion.nav>
+        <Motion.div
+          className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(6,182,212,0.18),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.14),transparent_30%)]"
+          animate={{ opacity: [0.7, 1, 0.8] }}
+          transition={{
+            duration: 6 * MOTION_DURATION_SCALE,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
 
-          <Motion.div
-            className="flex gap-4"
-            initial={{ opacity: 0, y: -16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.2 }}
-          >
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noreferrer"
-              className="transition hover:scale-110 hover:text-blue-400"
-            >
-              <FaLinkedinIn size={18} />
-            </a>
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noreferrer"
-              className="transition hover:scale-110 hover:text-pink-400"
-            >
-              <FaInstagram size={18} />
-            </a>
-            <a
-              href="https://topmate.io/kiran_shinde48/"
-              target="_blank"
-              rel="noreferrer"
-              className="transition hover:scale-110 hover:text-cyan-300"
-            >
-              <Sparkles size={18} />
-            </a>
-            <a
-              href="mailto:kiranshinde4443@gmail.com"
-              className="transition hover:scale-110 hover:text-emerald-300"
-            >
-              <Mail size={18} />
-            </a>
-            <a
-              href="#blogs"
-              onClick={handleAnchorNavigation}
-              className="transition hover:scale-110 hover:text-amber-300"
-            >
-              <BookOpen size={18} />
-            </a>
-          </Motion.div>
-        </div>
-      </header>
+        <SiteHeader
+          navLinks={homeNavLinks}
+          utilityLinks={homeUtilityLinks}
+          onAnchorClick={handleAnchorNavigation}
+        />
 
-      <section
-        id="hero"
-        className="relative scroll-mt-24 overflow-hidden px-6 py-16 md:scroll-mt-28 md:py-24"
-      >
-        <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
-          <Motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerWrap}
-            className="space-y-6"
-          >
-            <Motion.p
-              variants={fadeUp}
-              custom={0}
-              className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70"
+        <main id="content">
+        <section
+          id="hero"
+          aria-labelledby="hero-title"
+          className="relative overflow-hidden px-5 py-14 md:px-6 md:py-18 lg:py-28"
+        >
+          <div className="mx-auto grid max-w-7xl items-center gap-10 md:gap-14 lg:gap-20 lg:grid-cols-[minmax(0,1.12fr)_minmax(320px,0.88fr)]">
+            <Motion.div
+              initial="hidden"
+              animate="visible"
+              variants={staggerWrap}
+              className="space-y-6 md:space-y-8"
             >
-              MongoDB • PostgreSQL • Distributed Systems
-            </Motion.p>
+              <Motion.p
+                variants={fadeUp}
+                custom={0}
+                className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70"
+              >
+                {siteConfig.introLabel}
+              </Motion.p>
 
-            <Motion.div variants={fadeUp} custom={0.1}>
-              <div className="space-y-3">
-                <p className="flex items-center text-white/95">
-                  <span className="mr-3 inline-block text-2xl align-middle md:text-4xl">
-                    👋
-                  </span>
-                  <span className="align-middle text-2xl font-semibold tracking-[-0.03em] text-white md:text-4xl">
-                    Hello! I&apos;m Kiran Shinde
-                  </span>
-                </p>
-
-                <Motion.h1
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35 * MOTION_DURATION_SCALE, ease: 'easeOut' }}
-                  className="whitespace-nowrap text-[1.9rem] font-bold leading-none tracking-[-0.05em] text-cyan-300 sm:text-[2.4rem] lg:text-[3rem]"
+              <Motion.div variants={fadeUp} custom={0.08} className="space-y-4">
+                <h1
+                  id="hero-title"
+                  className="max-w-5xl font-bold tracking-[-0.06em] text-white"
                 >
-                  {HERO_TITLE}
-                </Motion.h1>
+                  <span className="flex items-center gap-3 text-[1.85rem] leading-[1.02] text-white/96 sm:gap-4 sm:text-[2.5rem] md:text-[3rem] lg:text-[3.35rem]">
+                    <Hand
+                      aria-hidden="true"
+                      className="h-[0.9em] w-[0.9em] shrink-0 text-amber-300"
+                      strokeWidth={2.1}
+                    />
+                    <span>{siteConfig.heroGreeting}</span>
+                  </span>
+                  <span className="mt-3 block text-[1.95rem] leading-[0.95] tracking-[-0.07em] text-cyan-300 sm:whitespace-nowrap sm:text-[2.75rem] md:text-[3.15rem] lg:text-[3.6rem] xl:text-[4.2rem]">
+                    {siteConfig.role}
+                  </span>
+                </h1>
+              </Motion.div>
+
+              <Motion.p
+                variants={fadeUp}
+                custom={0.16}
+                className="max-w-3xl text-lg leading-8 text-white/72 md:text-[1.05rem] md:leading-9"
+              >
+                {siteConfig.introText}
+              </Motion.p>
+
+              <Motion.p
+                variants={fadeUp}
+                custom={0.22}
+                className="max-w-3xl text-base leading-8 text-white/60 md:text-lg md:leading-9"
+              >
+                {siteConfig.heroSummary}
+              </Motion.p>
+
+              <Motion.div
+                variants={fadeUp}
+                custom={0.3}
+                className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4"
+              >
+                <a
+                  href="#experience"
+                  onClick={handleAnchorNavigation}
+                  className="inline-flex w-full items-center justify-center gap-2.5 rounded-[1.7rem] border border-white/10 bg-white/5 px-7 py-3.5 text-lg font-semibold text-white transition hover:-translate-y-1 hover:border-white/20 hover:bg-white/10 sm:w-auto md:min-w-[11.5rem]"
+                >
+                  <Briefcase className="h-5 w-5 text-cyan-300" />
+                  <span>Experience</span>
+                </a>
+                <a
+                  href="#writing"
+                  onClick={handleAnchorNavigation}
+                  className="inline-flex w-full items-center justify-center gap-2.5 rounded-[1.7rem] border border-white/10 bg-white/5 px-7 py-3.5 text-lg font-semibold text-white transition hover:-translate-y-1 hover:border-white/20 hover:bg-white/10 sm:w-auto md:min-w-[11.5rem]"
+                >
+                  <BookOpen className="h-5 w-5 text-cyan-300" />
+                  <span>Read Blogs</span>
+                </a>
+              </Motion.div>
+            </Motion.div>
+
+            <Motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.9 * MOTION_DURATION_SCALE, ease: [0.22, 1, 0.36, 1] }}
+              className="flex justify-center lg:justify-end"
+            >
+              <Motion.div
+                className="relative"
+                animate={{ y: [0, -10, 0] }}
+                transition={{
+                  duration: 4 * MOTION_DURATION_SCALE,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+              >
+                <div className="absolute inset-[-10%] rounded-full bg-[radial-gradient(circle,rgba(34,211,238,0.18),rgba(168,85,247,0.18)_45%,transparent_72%)] blur-3xl" />
+                <ProgressivePortrait
+                  sequence={siteConfig.profileImageSequence}
+                  alt="Portrait of Kiran Shinde"
+                  width={siteConfig.profileImageWidth}
+                  height={siteConfig.profileImageHeight}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  className="relative h-64 w-64 rounded-full border border-white/10 object-cover shadow-2xl shadow-cyan-950/40 sm:h-72 sm:w-72 md:h-[22rem] md:w-[22rem] lg:h-[31rem] lg:w-[31rem]"
+                />
+              </Motion.div>
+            </Motion.div>
+          </div>
+        </section>
+
+        <section
+          id="specialties"
+          aria-labelledby="specialties-title"
+          className={SECTION_SPACING}
+        >
+          <div className={`${SECTION_FRAME} grid gap-12 lg:grid-cols-[minmax(0,0.68fr)_minmax(300px,0.32fr)]`}>
+            <div>
+              <Motion.p
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.5 * MOTION_DURATION_SCALE }}
+                className={SECTION_EYEBROW}
+              >
+                Specialties
+              </Motion.p>
+
+              <Motion.h2
+                id="specialties-title"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
+                className="mt-4 max-w-4xl text-3xl font-bold tracking-[-0.04em] md:text-5xl"
+              >
+                Database engineering specialties
+              </Motion.h2>
+
+              <Motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
+                className="mt-4 max-w-3xl text-lg leading-8 text-white/65"
+              >
+                Core areas where I help engineering teams keep critical data systems
+                fast, stable, and ready for production growth.
+              </Motion.p>
+
+              <Motion.div
+                variants={staggerWrap}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.15 }}
+                className={`mt-10 ${DIVIDER_LIST}`}
+              >
+                {specialties.map((feature, index) => (
+                  <Motion.article
+                    key={feature.title}
+                    variants={fadeUp}
+                    className="grid gap-4 py-6 md:grid-cols-[84px_minmax(0,1fr)] md:gap-6"
+                  >
+                    <div className="flex items-center gap-3 text-white/60">
+                      {(() => {
+                        const Icon = sectionIconMap[feature.icon]
+
+                        return (
+                          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-cyan-300">
+                            <Icon className="h-[18px] w-[18px]" strokeWidth={1.8} />
+                          </span>
+                        )
+                      })()}
+                      <span className="text-xs font-medium uppercase tracking-[0.18em] text-cyan-300/80">
+                        {formatIndex(index)}
+                      </span>
+                    </div>
+
+                    <div className="grid gap-3 md:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] md:gap-8">
+                      <h3 className="text-xl font-semibold text-white md:text-2xl">
+                        {feature.title}
+                      </h3>
+                      <p className="text-sm leading-7 text-white/66 md:text-base">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </Motion.article>
+                ))}
+              </Motion.div>
+            </div>
+
+            <Motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.7 * MOTION_DURATION_SCALE, delay: 0.08 }}
+              className="hidden lg:block"
+            >
+              <div className="sticky top-32">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[2.2rem] border border-white/10 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.16),transparent_36%),linear-gradient(155deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02)_48%,rgba(8,145,178,0.06))] p-8">
+                  <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:28px_28px] opacity-25" />
+                  <div className="absolute left-1/2 top-1/2 h-[44%] w-[44%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-300/25" />
+                  <div className="absolute left-1/2 top-1/2 h-[68%] w-[68%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10" />
+                  <div className="absolute left-1/2 top-1/2 h-[88%] w-[88%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/6" />
+
+                  {specialties.map((feature, index) => {
+                    const positions = [
+                      'left-[10%] top-[16%]',
+                      'right-[10%] top-[24%]',
+                      'left-[14%] bottom-[16%]',
+                      'right-[14%] bottom-[12%]',
+                    ]
+
+                    return (
+                      <div
+                        key={feature.title}
+                        className={`absolute ${positions[index]} max-w-[10rem] rounded-2xl border border-white/10 bg-neutral-950/70 px-4 py-3 backdrop-blur-md`}
+                      >
+                        <p className="text-xs uppercase tracking-[0.18em] text-cyan-300/75">
+                          {formatIndex(index)}
+                        </p>
+                        <div className="mt-2 flex items-center gap-2 text-sm font-medium text-white/82">
+                          {(() => {
+                            const Icon = sectionIconMap[feature.icon]
+
+                            return (
+                              <Icon className="h-[18px] w-[18px] text-cyan-300" strokeWidth={1.8} />
+                            )
+                          })()}
+                          <span>{feature.title}</span>
+                        </div>
+                      </div>
+                    )
+                  })}
+
+                  <div className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-300 shadow-[0_0_40px_rgba(34,211,238,0.55)]" />
+                </div>
               </div>
             </Motion.div>
+          </div>
+        </section>
 
-            <Motion.p
-              variants={fadeUp}
-              custom={0.2}
-              className="max-w-xl whitespace-pre-line text-lg text-white/70"
+        <section
+          id="services"
+          aria-labelledby="services-title"
+          className={SECTION_SPACING}
+        >
+          <div className={`${SECTION_FRAME} grid gap-10 lg:grid-cols-[minmax(280px,0.34fr)_minmax(0,0.66fr)]`}>
+            <Motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
+              className="lg:sticky lg:top-28 lg:self-start"
             >
-              {'I design and scale high-performance database systems with a primary focus on MongoDB and strong expertise in PostgreSQL. I specialize in replication, sharding, query optimization, and building reliable distributed data systems for production workloads.\n\nExperienced in optimizing large-scale databases, handling high-throughput systems, and ensuring reliability in production environments.'}
+              <p className={SECTION_EYEBROW}>Collaboration</p>
+              <h2
+                id="services-title"
+                className="mt-4 max-w-md text-3xl font-bold tracking-[-0.04em] md:text-5xl"
+              >
+                How I help teams with database performance and reliability
+              </h2>
+              <p className="mt-4 max-w-md text-lg leading-8 text-white/65">
+                The strongest results usually come from focused hands-on work around
+                tuning, reliability, schema clarity, and operational maturity.
+              </p>
+            </Motion.div>
+
+            <Motion.div
+              variants={staggerWrap}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.18 }}
+              className={DIVIDER_LIST}
+            >
+              {collaborationServices.map((service, index) => (
+                <Motion.article
+                  key={service.title}
+                  variants={fadeUp}
+                  className="grid gap-4 py-6 md:grid-cols-[84px_minmax(0,1fr)] md:gap-6"
+                >
+                  <p className="text-xs font-medium uppercase tracking-[0.18em] text-cyan-300/80">
+                    {formatIndex(index)}
+                  </p>
+                  <div className="grid gap-3 md:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] md:gap-8">
+                    <h3 className="text-xl font-semibold text-white md:text-2xl">
+                      {service.title}
+                    </h3>
+                    <p className="text-sm leading-7 text-white/68 md:text-base">
+                      {service.description}
+                    </p>
+                  </div>
+                </Motion.article>
+              ))}
+            </Motion.div>
+          </div>
+        </section>
+
+        <section
+          id="stack"
+          aria-labelledby="stack-title"
+          className={SECTION_SPACING}
+        >
+          <div className={SECTION_FRAME}>
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)] lg:items-end">
+              <div>
+                <Motion.p
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{ duration: 0.5 * MOTION_DURATION_SCALE }}
+                  className={SECTION_EYEBROW}
+                >
+                  Stack
+                </Motion.p>
+                <Motion.h2
+                  id="stack-title"
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
+                  className="mt-4 max-w-3xl text-3xl font-bold tracking-[-0.04em] md:text-5xl"
+                >
+                  Database stack and platform expertise
+                </Motion.h2>
+              </div>
+
+              <Motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
+                className="max-w-3xl text-lg leading-8 text-white/65"
+              >
+                The databases, tooling, operational practices, and cloud workflow I
+                rely on to build reliable production systems.
+              </Motion.p>
+            </div>
+
+            <Motion.div
+              variants={staggerWrap}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.18 }}
+              className={`mt-10 ${DIVIDER_LIST}`}
+            >
+              {techStackGroups.map((group, index) => (
+                <Motion.article
+                  key={group.label}
+                  variants={fadeUp}
+                  className="grid gap-5 py-6 lg:grid-cols-[minmax(230px,0.28fr)_minmax(0,0.72fr)] lg:gap-8"
+                >
+                  <div className="flex items-center gap-4">
+                    {(() => {
+                      const Icon = sectionIconMap[group.icon]
+
+                      return (
+                        <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-cyan-300">
+                          <Icon className="h-5 w-5" strokeWidth={1.8} />
+                        </span>
+                      )
+                    })()}
+                    <div>
+                      <p className="text-xs font-medium uppercase tracking-[0.18em] text-cyan-300/80">
+                        Skill area {formatIndex(index)}
+                      </p>
+                      <h3 className="mt-2 text-xl font-semibold text-white">{group.label}</h3>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-x-6 gap-y-3 sm:grid-cols-2 xl:grid-cols-3">
+                    {group.items.map((item) => (
+                      <div key={item} className="flex items-center gap-3 text-white/68">
+                        <span className="h-1.5 w-1.5 rounded-full bg-cyan-300/80" />
+                        <span className="text-sm leading-7 md:text-base">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </Motion.article>
+              ))}
+            </Motion.div>
+          </div>
+        </section>
+
+        <section
+          id="experience"
+          aria-labelledby="experience-title"
+          className={SECTION_SPACING}
+        >
+          <div className={SECTION_FRAME}>
+            <Motion.p
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.5 * MOTION_DURATION_SCALE }}
+              className={SECTION_EYEBROW}
+            >
+              Experience
             </Motion.p>
 
-            <Motion.div
-              variants={fadeUp}
-              custom={0.3}
-              className="flex flex-wrap gap-4"
+            <Motion.h2
+              id="experience-title"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
+              className="mt-4 max-w-4xl text-3xl font-bold tracking-[-0.04em] md:text-5xl"
             >
-              <a
-                href="#experience"
-                onClick={handleAnchorNavigation}
-                className="rounded-2xl border border-white/10 bg-white/5 px-6 py-3 font-semibold text-white transition hover:-translate-y-1 hover:bg-white/10"
-              >
-                Experience 💼
-              </a>
-              <a
-                href="#blogs"
-                onClick={handleAnchorNavigation}
-                className="rounded-2xl border border-white/10 bg-white/5 px-6 py-3 font-semibold text-white transition hover:-translate-y-1 hover:bg-white/10"
-              >
-                Read Blogs ✍️
-              </a>
-            </Motion.div>
-          </Motion.div>
+              Professional experience in database engineering
+            </Motion.h2>
 
-          <Motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.9 * MOTION_DURATION_SCALE, ease: [0.22, 1, 0.36, 1] }}
-            className="flex justify-center"
-          >
-            <Motion.div
-              className="relative"
-              animate={{ y: [0, -10, 0] }}
-              transition={{
-                duration: 4 * MOTION_DURATION_SCALE,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
+            <Motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
+              className="mt-4 max-w-3xl text-lg leading-8 text-white/65"
             >
-              <div className="absolute inset-0 rounded-full bg-purple-500/20 blur-3xl" />
-              <img
-                src={heroImage}
-                alt="Portrait of Kiran Shinde"
-                className="relative h-60 w-60 rounded-full border border-white/10 object-cover shadow-2xl shadow-purple-900/30 md:h-72 md:w-72"
-              />
-            </Motion.div>
-          </Motion.div>
-        </div>
-      </section>
+              Hands-on delivery across SaaS, fintech, and enterprise systems with
+              a focus on scalability, performance, resilience, and operational
+              reliability.
+            </Motion.p>
 
-      <section
-        id="features"
-        className="scroll-mt-24 px-6 pb-10 md:scroll-mt-28 md:pb-14"
-      >
-        <div className="mx-auto max-w-6xl">
-          <Motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
-            className="text-3xl font-bold md:text-5xl"
-          >
-            Features ✨
-          </Motion.h2>
-
-          <Motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
-            className="mt-4 max-w-3xl text-lg text-white/65"
-          >
-            Core areas where I help engineering teams keep critical database
-            systems fast, stable, and ready for production growth.
-          </Motion.p>
-
-          <Motion.div
-            variants={staggerWrap}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
-            className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-4"
-          >
-            {features.map((feature, index) => (
+            <div className="relative mt-12">
+              <div className="absolute bottom-0 left-[11px] top-0 hidden w-px bg-gradient-to-b from-cyan-300/35 via-white/10 to-transparent md:block" />
               <Motion.div
-                key={feature.title}
-                variants={fadeUp}
-                className="rounded-3xl border border-white/10 bg-gradient-to-br from-cyan-300/[0.08] via-white/[0.05] to-transparent p-6 backdrop-blur-sm transition hover:-translate-y-2 hover:border-cyan-400/30 hover:bg-white/8"
-                whileHover={{ scale: 1.02 }}
+                variants={staggerWrap}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.15 }}
+                className="space-y-0"
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-300/10 text-2xl">
-                    {feature.icon}
-                  </div>
-                  <span className="rounded-full border border-white/10 bg-neutral-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-white/60">
-                    0{index + 1}
-                  </span>
-                </div>
-                <h3 className="mt-5 text-xl font-semibold text-white">{feature.title}</h3>
-                <p className="mt-4 text-sm leading-7 text-white/68 md:text-base">
-                  {feature.description}
-                </p>
-              </Motion.div>
-            ))}
-          </Motion.div>
-        </div>
-      </section>
+                {experienceTimeline.map((item) => (
+                  <Motion.article
+                    key={`${item.company}-${item.role}`}
+                    variants={fadeUp}
+                    className="relative border-t border-white/[0.08] py-8 first:border-t-0 md:grid md:grid-cols-[minmax(0,0.32fr)_minmax(0,0.68fr)] md:gap-10 md:pl-12"
+                  >
+                    <span className="absolute left-0 top-10 hidden h-6 w-6 rounded-full border border-cyan-300/35 bg-neutral-950 md:block" />
 
-      <section
-        id="tech"
-        className="scroll-mt-24 px-6 pt-6 pb-10 md:scroll-mt-28 md:pb-14"
-      >
-        <div className="mx-auto max-w-6xl">
-          <Motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
-            className="text-3xl font-bold md:text-5xl"
-          >
-            Tech Stack 🛠️
-          </Motion.h2>
-
-          <Motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
-            className="mt-4 max-w-3xl text-lg text-white/65"
-          >
-            The platforms, tools, and core strengths I use to build reliable,
-            observable, and high-performance database systems in production.
-          </Motion.p>
-
-          <Motion.div
-            variants={staggerWrap}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3"
-          >
-            {techStackGroups.map((group, index) => (
-              <Motion.div
-                key={group.label}
-                variants={fadeUp}
-                whileHover={{ y: -4, scale: 1.01 }}
-                className="h-full rounded-3xl border border-white/10 bg-gradient-to-br from-white/8 via-white/5 to-transparent p-6 backdrop-blur-sm transition hover:border-cyan-400/30 hover:bg-white/8"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-[0.18em] text-cyan-300/80">
-                      Skill Area 0{index + 1}
-                    </p>
-                    <h3 className="mt-3 text-xl font-semibold text-white">
-                      <span className="mr-2">{group.emoji}</span>
-                      {group.label}
-                    </h3>
-                  </div>
-                  <span className="rounded-full border border-white/10 bg-neutral-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-white/60">
-                    {group.items.length} Items
-                  </span>
-                </div>
-
-                <div className="mt-6 flex flex-wrap gap-2.5">
-                  {group.items.map((item) => (
-                    <span
-                      key={item}
-                      className="inline-flex items-center rounded-xl border border-white/10 bg-neutral-900/75 px-3.5 py-2 text-sm font-medium text-white/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </Motion.div>
-            ))}
-          </Motion.div>
-        </div>
-      </section>
-
-      <section
-        id="experience"
-        className="scroll-mt-24 px-6 pt-6 pb-10 md:scroll-mt-28 md:pb-14"
-      >
-        <div className="mx-auto max-w-6xl">
-          <Motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
-            className="text-3xl font-bold md:text-5xl"
-          >
-            Experience 💼
-          </Motion.h2>
-
-          <Motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
-            className="mt-4 max-w-3xl text-lg text-white/65"
-          >
-            Hands-on database engineering experience across SaaS, fintech, and
-            enterprise environments, with a focus on scalability, performance,
-            resilience, and production reliability.
-          </Motion.p>
-
-          <Motion.div
-            variants={staggerWrap}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
-            className="mt-8 space-y-6"
-          >
-            {experienceTimeline.map((item) => (
-              <Motion.article
-                key={`${item.company}-${item.role}`}
-                variants={fadeUp}
-                whileHover={{ y: -4 }}
-                className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition hover:border-cyan-400/30 hover:bg-white/8"
-              >
-                <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                  <div>
-                    <p className="text-sm font-medium uppercase tracking-[0.18em] text-cyan-300/80">
-                      {item.location}
-                    </p>
-                    <h3 className="mt-2 text-2xl font-semibold text-white">
-                      {item.role}
-                    </h3>
-                    <p className="mt-1 text-base text-white/70">{item.company}</p>
-                  </div>
-                  <p className="rounded-full border border-white/10 bg-neutral-900/80 px-4 py-2 text-sm text-white/75">
-                    {item.duration}
-                  </p>
-                </div>
-
-                <ul className="mt-6 space-y-3 text-sm text-white/75 md:text-base">
-                  {item.highlights.map((highlight) => (
-                    <li key={highlight} className="flex items-start gap-3">
-                      <span className="mt-1 h-2 w-2 rounded-full bg-cyan-300" />
-                      <span>{highlight}</span>
-                    </li>
-                  ))}
-                </ul>
-              </Motion.article>
-            ))}
-          </Motion.div>
-
-          <Motion.div
-            variants={staggerWrap}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
-            className="mt-16"
-          >
-            <Motion.h3
-              variants={fadeUp}
-              className="text-3xl font-bold text-white md:text-5xl"
-            >
-              Key Impact 📈
-            </Motion.h3>
-            <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {keyImpact.map((item, index) => (
-                <Motion.div
-                  key={item}
-                  variants={fadeUp}
-                  className="rounded-3xl border border-white/10 bg-gradient-to-br from-cyan-300/[0.08] via-white/[0.05] to-transparent p-5 text-white/80 backdrop-blur-sm"
-                >
-                  <p className="text-xs uppercase tracking-[0.18em] text-cyan-300/75">
-                    Impact 0{index + 1}
-                  </p>
-                  <p className="mt-3 text-sm leading-7 text-white/78 md:text-base">
-                    {item}
-                  </p>
-                </Motion.div>
-              ))}
-            </div>
-          </Motion.div>
-        </div>
-      </section>
-
-      <section
-        id="teaching"
-        className="scroll-mt-24 px-6 pt-6 pb-10 md:scroll-mt-28 md:pb-14"
-      >
-        <div className="mx-auto max-w-6xl">
-          <Motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
-            className="text-3xl font-bold md:text-5xl"
-          >
-            Teaching &amp; Impact 📚
-          </Motion.h2>
-
-          <Motion.article
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
-            whileHover={{ y: -4 }}
-            className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition hover:border-cyan-400/30 hover:bg-white/8"
-          >
-            <p className="max-w-4xl text-lg leading-8 text-white/72">
-              Teaching Mathematics has been a passion of mine for the past 8
-              years.
-            </p>
-
-            <p className="mt-5 max-w-4xl text-base leading-8 text-white/72 md:text-lg">
-              I started teaching students of 10th, 11th, and 12th grade during
-              my third year of engineering, and it gradually became an
-              important part of my journey.
-            </p>
-
-            <p className="mt-5 max-w-4xl text-base leading-8 text-white/72 md:text-lg">
-              Every year, I work with 150+ students, focusing on helping them
-              understand concepts clearly rather than just memorizing
-              solutions.
-            </p>
-
-            <ul className="mt-6 space-y-3 text-white/78">
-              {teachingImpactHighlights.map((item) => (
-                <li key={item.text} className="flex items-start gap-3">
-                  <span className="text-lg leading-none">{item.icon}</span>
-                  <span className="text-sm leading-7 md:text-base">{item.text}</span>
-                </li>
-              ))}
-            </ul>
-
-            <p className="mt-6 max-w-4xl text-base leading-8 text-white/72 md:text-lg">
-              For me, teaching is not just about academics, it&apos;s about
-              building confidence and shaping the way students think.
-            </p>
-          </Motion.article>
-        </div>
-      </section>
-
-      <section
-        id="blogs"
-        className="scroll-mt-24 px-6 py-10 md:scroll-mt-28 md:py-14"
-      >
-        <div className="mx-auto max-w-6xl">
-          <Motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
-            className="text-3xl font-bold md:text-5xl"
-          >
-            Blogs ✍️
-          </Motion.h2>
-
-          <Motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
-            className="mt-4 max-w-3xl text-lg text-white/65"
-          >
-            Writing focused on practical lessons from database operations,
-            performance tuning, schema design, and production troubleshooting.
-          </Motion.p>
-
-          <Motion.div
-            variants={staggerWrap}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
-            className="mt-8 grid gap-6 md:grid-cols-3"
-          >
-            {blogs.map((blog, index) => (
-              <Motion.a
-                key={blog.title}
-                href={blog.link}
-                variants={fadeUp}
-                whileHover={{ y: -6, scale: 1.01 }}
-                className="block rounded-3xl border border-white/10 bg-gradient-to-br from-cyan-300/[0.08] via-white/[0.05] to-transparent p-6 backdrop-blur-sm transition hover:border-cyan-400/30 hover:bg-white/8"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <p className="text-xs font-medium uppercase tracking-[0.18em] text-cyan-300/80">
-                    Article 0{index + 1}
-                  </p>
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-cyan-300/10 text-cyan-300">
-                    <BookOpen size={18} />
-                  </div>
-                </div>
-                <h3 className="mt-5 text-xl font-semibold text-white">{blog.title}</h3>
-                <p className="mt-4 text-sm leading-7 text-white/68 md:text-base">
-                  {blog.desc}
-                </p>
-                <p className="mt-6 text-sm font-medium text-cyan-300">
-                  Read more →
-                </p>
-              </Motion.a>
-            ))}
-          </Motion.div>
-        </div>
-      </section>
-
-      <section
-        id="contact"
-        className="scroll-mt-24 px-6 pt-6 pb-10 md:scroll-mt-28 md:pb-14"
-      >
-        <div className="mx-auto max-w-6xl">
-          <Motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
-            className="text-3xl font-bold md:text-5xl"
-          >
-            Contact 📬
-          </Motion.h2>
-
-          <Motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
-            className="mt-4 max-w-3xl text-lg text-white/65"
-          >
-            Open to conversations around database engineering, production
-            reliability, and performance tuning across high-scale systems.
-          </Motion.p>
-
-          <Motion.div
-            variants={staggerWrap}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
-            className="mt-8 grid gap-6 md:grid-cols-3"
-          >
-            {contactMethods.map((item) => {
-              const Icon = item.icon
-
-              return (
-                <Motion.a
-                  key={item.label}
-                  href={item.href}
-                  variants={fadeUp}
-                  whileHover={{ y: -4, scale: 1.01 }}
-                  target={item.href.startsWith('http') ? '_blank' : undefined}
-                  rel={item.href.startsWith('http') ? 'noreferrer' : undefined}
-                  className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition hover:border-cyan-400/30 hover:bg-white/8"
-                >
-                  <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="text-sm font-medium uppercase tracking-[0.18em] text-cyan-300/80">
-                        {item.label}
+                        {item.location}
                       </p>
-                      <p className="mt-3 break-all text-lg font-semibold text-white">
-                        {item.value}
+                      <h3 className="mt-3 text-2xl font-semibold text-white">
+                        {item.role}
+                      </h3>
+                      <p className="mt-1 text-base text-white/70">{item.company}</p>
+                      <p className="mt-4 text-sm text-white/48">{item.durationLabel}</p>
+                    </div>
+
+                    <ul className="mt-6 space-y-3 text-sm leading-7 text-white/72 md:mt-0 md:text-base">
+                      {item.highlights.map((highlight) => (
+                        <li key={highlight} className="flex items-start gap-3">
+                          <span className="mt-2 h-1.5 w-1.5 rounded-full bg-cyan-300" />
+                          <span>{highlight}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </Motion.article>
+                ))}
+              </Motion.div>
+            </div>
+
+            <Motion.div
+              variants={staggerWrap}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+              className="mt-16"
+            >
+              <Motion.h3 variants={fadeUp} className="text-3xl font-bold text-white md:text-5xl">
+                Key impact
+              </Motion.h3>
+              <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                {keyImpact.map((item, index) => (
+                  <Motion.article
+                    key={item}
+                    variants={fadeUp}
+                    className="border-l border-white/[0.08] pl-4"
+                  >
+                    <p className="text-xs uppercase tracking-[0.18em] text-cyan-300/75">
+                      Impact {formatIndex(index)}
+                    </p>
+                    <p className="mt-4 text-sm leading-7 text-white/74 md:text-base">
+                      {item}
+                    </p>
+                  </Motion.article>
+                ))}
+              </div>
+            </Motion.div>
+          </div>
+        </section>
+
+        <section
+          id="teaching"
+          aria-labelledby="teaching-title"
+          className={SECTION_SPACING}
+        >
+          <div className={`${SECTION_FRAME} grid gap-12 lg:grid-cols-[minmax(0,0.6fr)_minmax(280px,0.4fr)]`}>
+            <div>
+              <Motion.p
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.5 * MOTION_DURATION_SCALE }}
+                className={SECTION_EYEBROW}
+              >
+                Teaching
+              </Motion.p>
+
+              <Motion.h2
+                id="teaching-title"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
+                className="mt-4 max-w-4xl text-3xl font-bold tracking-[-0.04em] md:text-5xl"
+              >
+                Teaching and mentorship impact
+              </Motion.h2>
+
+              <Motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6 * MOTION_DURATION_SCALE, delay: 0.1 }}
+                className="mt-6 max-w-4xl text-lg leading-8 text-white/72"
+              >
+                {teachingContent.intro}
+              </Motion.p>
+
+              {teachingContent.paragraphs.map((paragraph) => (
+                <Motion.p
+                  key={paragraph}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.55 * MOTION_DURATION_SCALE }}
+                  className="mt-5 max-w-4xl text-base leading-8 text-white/68 md:text-lg"
+                >
+                  {paragraph}
+                </Motion.p>
+              ))}
+
+              <Motion.ul
+                variants={staggerWrap}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.25 }}
+                className={`mt-8 ${DIVIDER_LIST}`}
+              >
+                {teachingContent.highlights.map((item) => (
+                  <Motion.li
+                    key={item.text}
+                    variants={fadeUp}
+                    className="flex items-start gap-4 py-4 text-white/78"
+                  >
+                    {(() => {
+                      const Icon = sectionIconMap[item.icon]
+
+                      return (
+                        <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-cyan-300">
+                          <Icon className="h-[18px] w-[18px]" strokeWidth={1.8} />
+                        </span>
+                      )
+                    })()}
+                    <span className="text-sm leading-7 md:text-base">{item.text}</span>
+                  </Motion.li>
+                ))}
+              </Motion.ul>
+            </div>
+
+            <Motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.7 * MOTION_DURATION_SCALE, delay: 0.08 }}
+              className="hidden lg:block"
+            >
+              <div className="sticky top-32 overflow-hidden rounded-[2.2rem] border border-white/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.05),rgba(255,255,255,0.015)_45%,rgba(34,211,238,0.08))] p-8">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.18),transparent_36%),linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:auto,30px_30px,30px_30px] opacity-30" />
+                <div className="relative space-y-6">
+                  {teachingContent.highlights.map((item, index) => (
+                    <div
+                      key={item.text}
+                      className="border-b border-white/10 pb-5 last:border-b-0 last:pb-0"
+                    >
+                      <p className="text-xs uppercase tracking-[0.18em] text-cyan-300/75">
+                        Note {formatIndex(index)}
                       </p>
+                      <div className="mt-3 flex items-start gap-3">
+                        {(() => {
+                          const Icon = sectionIconMap[item.icon]
+
+                          return (
+                            <span className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-neutral-950/60 text-cyan-300">
+                              <Icon className="h-5 w-5" strokeWidth={1.8} />
+                            </span>
+                          )
+                        })()}
+                        <p className="text-base leading-7 text-white/80">{item.text}</p>
+                      </div>
                     </div>
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-cyan-300/10 text-cyan-300">
-                      <Icon size={20} />
-                    </div>
+                  ))}
+                </div>
+              </div>
+            </Motion.div>
+          </div>
+        </section>
+
+        <section
+          id="writing"
+          aria-labelledby="writing-title"
+          className={SECTION_SPACING}
+        >
+          <div className={`${SECTION_FRAME} grid gap-10 lg:grid-cols-[minmax(280px,0.34fr)_minmax(0,0.66fr)]`}>
+            <Motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
+              className="lg:sticky lg:top-28 lg:self-start"
+            >
+              <p className={SECTION_EYEBROW}>Writing</p>
+              <h2
+                id="writing-title"
+                className="mt-4 max-w-md text-3xl font-bold tracking-[-0.04em] md:text-5xl"
+              >
+                Writing on performance, incidents, indexing, and reliability
+              </h2>
+              <p className="mt-4 max-w-md text-lg leading-8 text-white/65">
+                Practical notes from production database work, including case-study
+                style lessons, operational checklists, indexing decisions, and
+                things I wish more teams talked about earlier.
+              </p>
+            </Motion.div>
+
+            <Motion.div
+              variants={staggerWrap}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+              className={DIVIDER_LIST}
+            >
+              {featuredArticles.map((article, index) => (
+                <Motion.a
+                  key={article.slug}
+                  href={article.path}
+                  variants={fadeUp}
+                  className="group grid gap-4 py-6 md:grid-cols-[110px_minmax(0,1fr)_auto] md:items-start md:gap-6"
+                >
+                  <div>
+                    <p className="text-xs font-medium uppercase tracking-[0.18em] text-cyan-300/80">
+                      Article {formatIndex(index)}
+                    </p>
+                    <p className="mt-2 text-sm text-white/45">{article.readTime}</p>
+                  </div>
+
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.16em] text-white/42">
+                      {article.category}
+                    </p>
+                    <h3 className="mt-3 text-xl font-semibold text-white transition group-hover:text-cyan-200 md:text-2xl">
+                      {article.title}
+                    </h3>
+                    <p className="mt-4 max-w-2xl text-sm leading-7 text-white/66 md:text-base">
+                      {article.cardDescription}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center text-sm font-medium text-cyan-300 transition group-hover:translate-x-1">
+                    Read article
                   </div>
                 </Motion.a>
-              )
-            })}
-          </Motion.div>
-        </div>
-      </section>
-    </div>
+              ))}
+            </Motion.div>
+          </div>
+        </section>
+
+        <section
+          id="faq"
+          aria-labelledby="faq-title"
+          className={SECTION_SPACING}
+        >
+          <div className={`${SECTION_FRAME} grid gap-10 lg:grid-cols-[minmax(280px,0.34fr)_minmax(0,0.66fr)]`}>
+            <Motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6 * MOTION_DURATION_SCALE }}
+              className="lg:sticky lg:top-28 lg:self-start"
+            >
+              <p className={SECTION_EYEBROW}>FAQ</p>
+              <h2
+                id="faq-title"
+                className="mt-4 max-w-md text-3xl font-bold tracking-[-0.04em] md:text-5xl"
+              >
+                Frequently asked questions
+              </h2>
+              <p className="mt-4 max-w-md text-lg leading-8 text-white/65">
+                A few direct answers about database specializations, writing, and
+                how to reach me for technical conversations.
+              </p>
+            </Motion.div>
+
+            <Motion.dl
+              variants={staggerWrap}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.18 }}
+              className={DIVIDER_LIST}
+            >
+              {faqItems.map((item, index) => (
+                <Motion.div
+                  key={item.question}
+                  variants={fadeUp}
+                  className="grid gap-3 py-6 md:grid-cols-[72px_minmax(0,1fr)] md:gap-6"
+                >
+                  <dt className="text-xs font-medium uppercase tracking-[0.18em] text-cyan-300/80">
+                    {formatIndex(index)}
+                  </dt>
+                  <div>
+                    <p className="text-lg font-semibold text-white">{item.question}</p>
+                    <dd className="mt-4 text-sm leading-7 text-white/68 md:text-base">
+                      {item.answer}
+                    </dd>
+                  </div>
+                </Motion.div>
+              ))}
+            </Motion.dl>
+          </div>
+        </section>
+
+        </main>
+
+        <SiteFooter id="contact" />
+      </div>
+    </LazyMotion>
   )
 }
