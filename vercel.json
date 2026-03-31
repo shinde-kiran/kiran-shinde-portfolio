@@ -29,7 +29,7 @@
   "rewrites": [
     {
       "source": "/:path*",
-      "destination": "/api/index?__pathname=/:path*"
+      "destination": "/api?__pathname=/:path*"
     }
   ]
 }
