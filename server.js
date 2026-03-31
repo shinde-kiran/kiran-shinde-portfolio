@@ -58,11 +58,11 @@ function getOrigin(request) {
   return `${protocol}://${host}`
 }
 
-function getStaticFilePath(requestPath) {
+function resolveStaticFilePath(rootDir, requestPath) {
   const normalizedPath = requestPath === '/' ? '/index.html' : requestPath
-  const resolvedPath = path.resolve(clientDist, `.${normalizedPath}`)
+  const resolvedPath = path.resolve(rootDir, `.${normalizedPath}`)
 
-  if (!resolvedPath.startsWith(clientDist)) {
+  if (!resolvedPath.startsWith(rootDir)) {
     return null
   }
 
@@ -70,7 +70,11 @@ function getStaticFilePath(requestPath) {
 }
 
 function getCacheControlHeader(requestPath) {
-  if (requestPath === '/favicon.png' || requestPath === '/site.webmanifest') {
+  if (requestPath === '/favicon.png') {
+    return 'public, max-age=31536000, immutable'
+  }
+
+  if (requestPath === '/site.webmanifest') {
     return 'public, max-age=86400'
   }
 
@@ -82,7 +86,7 @@ function getCacheControlHeader(requestPath) {
 }
 
 async function serveStaticFile(requestPath, response) {
-  const staticFilePath = getStaticFilePath(requestPath)
+  const staticFilePath = resolveStaticFilePath(clientDist, requestPath)
 
   if (!staticFilePath) {
     return false
@@ -105,6 +109,7 @@ async function serveStaticFile(requestPath, response) {
     if (cacheControl) {
       response.setHeader('Cache-Control', cacheControl)
     }
+
     createReadStream(staticFilePath).pipe(response)
     return true
   } catch {
